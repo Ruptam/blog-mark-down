@@ -1,168 +1,55 @@
-# Java 8 stream Interview Questions & Answers
+# Spring Boot and React Synergy
 
-> Click :star:if you like the project. Pull Requests are highly appreciated. Connect me [@Ruptam](https://www.linkedin.com/in/ruptamsadhukhan/) for technical content.
+In the dynamic realm of web development, the integration of Java Spring Boot and React stands out as a potent combination, empowering developers to build scalable and feature-rich applications. Java Spring Boot, with its robust backend capabilities, simplifies the development of microservices, ensuring a streamlined and efficient server-side architecture. On the other hand, React excels at crafting dynamic and responsive user interfaces, providing an immersive experience for end-users.
 
-### Table of Contents
+To illustrate the integration of Java Spring Boot and React, let's consider a simplified example. Assume you have a Spring Boot backend serving data through RESTful APIs. You can leverage React on the frontend to consume these APIs and display the information seamlessly.
 
-| No. | Questions                                                                                                                                                         |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | [Find list of employees whose name starts with alphabet A](#find-list-of-employees-whose-name-starts-with-alphabet-A)                                         |
-| 2   | [Group The employees By Department Names](#group-the-employees-by-department-names)                                                         |
-| 3   | [Find the total count of employees using stream](#find-the-total-count-of-employees-using-stream)                                                         |
-| 4   | [Find the max age of employees](#find-the-max-age-of-employees)                                                         |
-| 5   | [Find all department names](#find-all-department-names)                                                         |
-| 6   | [Find the count of employee in each department](#find-the-count-of-employee-in-each-department)                                                         |
-| 7   | [Find the list of employees whose age is less than 30](#find-the-list-of-employees-whose-age-is-less-than-30)                                                         |
-| 8   | [Find the list of employees whose age is in between 26 and 31](#find-the-list-of-employees-whose-age-is-in-between-26-and-31)                                                         |
-| 9   | [Find the average age of male and female employee](#find-the-average-age-of-male-and-female-employee)|
-| 10   | [Find the department who is having maximum number of employee](#find-the-department-who-is-having-maximum-number-of-employee)|
-| 11   | [Find the Employee who stays in Delhi and sort them by their names](#find-the-employee-who-stays-in-delhi-and-sort-them-by-their-names)|
-| 12   | [Find the average salary in all departments](#find-the-average-salary-in-all-departments)|
-| 13   | [Find the highest salary in each department](#find-the-highest-salary-in-each-department)|
-| 14   | [Find the list of employee and sort them by their salary](#find-the-list-of-employee-and-sort-them-by-their-salary)|
-| 15   | [Find the employee who has second highest salary](#find-the-employee-who-has-second-highest-salary)|
+In your Spring Boot backend, you might have a controller like this:
 
-1. ### Find list of employees whose name starts with alphabet A
+```
+@RestController
+@RequestMapping("/api/data")
+public class DataController {
 
-
-      ```java
-      List<Employee> aEmp = empList.stream()
-			.filter(emp -> emp.getName().startsWith("A"))
-						.collect(Collectors.toList());
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-2. ### Group The employees By Department Names
-
-   ````java
-      Map<String, List<Employee>> deptMap = empList.stream()
-	.collect(Collectors.groupingBy(emp -> emp.getDepartmentName()));
-      ````
-
-**[⬆ Back to Top](#table-of-contents)**
-
-3. ### Find the total count of employees using stream
-
-   ```java
-      long empCount = empList.stream().count();
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-4. ### Find the max age of employees
-
-   ```java
-      int maxAge = empList.stream().mapToInt(emp -> emp.getAge()).max().getAsInt();
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-5. ### Find all department names
-
-   ```java
-      List<String> deptNamesList = empList.stream()
-	.map(emp -> emp.getDepartmentName()).collect(Collectors.toList());
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-6. ### Find the count of employee in each department
-
-   ```java
-      Map<String, Long> deptCountMap = empList.stream().collect(Collectors.groupingBy(Employee::getDepartmentName, Collectors.counting()));
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-7. ### Find the list of employees whose age is less than 30
-
-   ```java
-      List<Employee> ageList = empList.stream().filter(emp -> emp.getAge() < 30).collect(Collectors.toList());
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-8. ### Find the list of employees whose age is in between 26 and 31
-
-   ```java
-      List<Employee> ageBetween26And30 = employees.stream().filter(emp -> emp.getAge() < 30 && emp.getAge() > 26).collect(Collectors.toList());
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-9. ### Find the average age of male and female employee
-
-   ```java
-      Map<String, Double> avgAgeMap = empList.stream().collect(Collectors.groupingBy(Employee::getGender, Collectors.averagingInt(Employee::getAge)));
-      ```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-
-10. ### Find the department who is having maximum number of employee
-
-   ```java
-      Map.Entry<String, Long> deptMaxCount = empList.stream().collect(Collectors.groupingBy(
-				Employee::getDepartmentName, Collectors.counting()))
-				.entrySet().stream().max(Map.Entry.comparingByValue()).get();
+    @GetMapping
+    public ResponseEntity<List<String>> getAllData() {
+        List<String> data = Arrays.asList(
+            "Item 1", "Item 2", "Item 3"
+          );
+        return ResponseEntity.ok(data);
+    }
+}
 ```
 
-**[⬆ Back to Top](#table-of-contents)**
+This controller exposes a simple endpoint that returns a list of strings. Now, on the React frontend, you can use a library like Axios to fetch this data:
 
-11. ### Find the Employee who stays in Delhi and sort them by their names
-
-   ```java
-      List<Employee> employees = empList.stream().filter(emp -> emp.getAddress().equals("Delhi")).sorted(Comparator.comparing(Employee::getName)).collect(Collectors.toList());
 ```
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-**[⬆ Back to Top](#table-of-contents)**
+const App = () => {
+    const [data, setData] = useState([]);
 
-12. ### Find the average salary in all departments
+    useEffect(() => {
+        axios.get('/api/data')
+            .then(response => setData(response.data))
+            .catch(error => console.error('Error fetching data: ', error));
+    }, []);
 
-   ```java
-      Map<String, Double> deptAvgSalary = empList.stream().collect(Collectors.groupingBy(Employee::getDepartmentName, Collectors.averagingDouble(Employee::getSalary)));
+    return (
+        <div>
+            <h1>Data from Spring Boot Backend</h1>
+            <ul>
+                {data.map((item, index) => (
+                    <li key={index}>{item}</li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default App;
 ```
+In this React component, we use the useEffect hook to fetch data from the Spring Boot backend when the component mounts. The retrieved data is then displayed in a simple list.
 
-**[⬆ Back to Top](#table-of-contents)**
-
-13. ### Find the highest salary in each department
-
-   ```java
-      Map<String, Optional<Employee>> highestSalForEachDedpt = employees.stream().collect(Collectors.groupingBy(Employee::getDepartNames, Collectors.minBy(Comparator.comparing(Employee::getSalary))));
-```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-14. ### Find the list of employee and sort them by their salary
-
-   ```java
-      List<Employee> emps = empList.stream().sorted(Comparator.comparing(Employee::getSalary)).collect(Collectors.toList());
-```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-15. ### Find the employee who has second lowest salary
-
-   ```java
-      Employee emp = empList.stream().sorted(Comparator.comparing(Employee::getSalary)).skip(1).findFirst().get();
-```
-
-**[⬆ Back to Top](#table-of-contents)**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Good luck with your interview 😊
-
----
+This integration showcases the synergy between Java Spring Boot and React, combining the strengths of both technologies to create a powerful and efficient full-stack development environment. Whether you're developing microservices or building engaging user interfaces, this integration opens doors to a world of possibilities in modern web development.
