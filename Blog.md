@@ -24,9 +24,10 @@ public class DataController {
     }
 }
 ```
-\n\n\n
+
 This controller exposes a simple endpoint that returns a list of strings. Now, on the React frontend, you can use a library like Axios to fetch this data:
-\n\n\n
+
+
 ```
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -54,5 +55,6 @@ const App = () => {
 
 export default App;
 ```
-\n\n\n
+
+
 In this React component, we use the useEffect hook to fetch data from the Spring Boot backend when the component mounts. The retrieved data is then displayed in a simple list.  \n\n\nThis integration showcases the synergy between Java Spring Boot and React, combining the strengths of both technologies to create a powerful and efficient full-stack development environment. Whether you're developing microservices or building engaging user interfaces, this integration opens doors to a world of possibilities in modern web development.
